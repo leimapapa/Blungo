@@ -58,7 +58,7 @@ h2{text-align:center;margin:10px;color:#fff}
 .level.australia{background-color:#24483f}
 .level::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,22,37,.05),rgba(12,22,37,.35) 48%,rgba(12,22,37,.96))}
 .level .face{position:absolute;width:clamp(78px,12vw,128px);height:clamp(78px,12vw,128px);object-fit:cover;left:50%;top:40%;transform:translate(-50%,-50%);z-index:2;border:3px solid rgba(255,255,255,.7);border-radius:50%}
-.level .hat{position:absolute;width:clamp(95px,15vw,160px);height:auto;left:50%;top:30%;transform:translate(-50%,-50%);z-index:3}
+.level .hat{position:absolute;width:clamp(100px,17vw,170px);height:auto;left:50%;top:35%;transform:translate(-50%,-50%);z-index:3}
 .level-name,.level-state{position:relative;z-index:4;display:block}
 .level-name{margin-top:clamp(154px,21vw,198px);font-size:1.2rem;font-weight:700}
 .level-state{margin-top:6px;color:#d5e4f2;font-size:.85rem}
@@ -400,29 +400,35 @@ const Assets = (() => {
   const dataUrl = (canvas) => canvas.toDataURL('image/png');
   const svgUrl = (svg) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   const characterSvg = (stage) => {
-    const bubbles = stage === 'sober'
+    const bubbles = stage === 'smashed'
       ? '<circle cx="57" cy="50" r="10" fill="none" stroke="#ffb900" stroke-width="2"/><circle cx="62" cy="68" r="6" fill="none" stroke="#ffb900" stroke-width="2"/><circle cx="62" cy="80" r="3" fill="none" stroke="#ffb900" stroke-width="2"/>'
       : stage === 'drunk'
         ? '<circle cx="62" cy="62" r="6" fill="none" stroke="#ffb900" stroke-width="2"/><circle cx="62" cy="78" r="3" fill="none" stroke="#ffb900" stroke-width="2"/>'
         : '';
-    const eyes = stage === 'smashed'
-      ? '<ellipse cx="112" cy="83" rx="25" ry="24"/><ellipse cx="153" cy="80" rx="23" ry="24"/><circle cx="112" cy="84" r="10" fill="#385723" stroke="none"/><circle cx="153" cy="81" r="10" fill="#385723" stroke="none"/>'
-      : '<ellipse cx="111" cy="84" rx="25" ry="25"/><ellipse cx="153" cy="80" rx="24" ry="25"/><circle cx="109" cy="90" r="10" fill="#385723" stroke="none"/><circle cx="155" cy="82" r="10" fill="#385723" stroke="none"/>';
-    const mouth = stage === 'smashed'
-      ? 'M99 120 Q134 129 173 98 Q174 147 141 150 Q111 149 99 120Z'
-      : 'M100 120 Q133 128 173 98 Q177 159 143 169 Q112 166 100 120Z';
-    const brows = stage === 'smashed'
-      ? '<path d="M88 78 Q109 49 135 65 M132 66 Q154 43 177 61" fill="none" stroke="#7030a0" stroke-width="3"/>'
-      : '<path d="M90 82 Q108 52 132 68 M133 65 Q153 43 175 60" fill="none" stroke="#7030a0" stroke-width="3"/>';
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212"><circle cx="106" cy="106" r="100" fill="#cba9e5" stroke="#7030a0" stroke-width="10"/>${bubbles}<g fill="#fff" stroke="#7030a0" stroke-width="3">${eyes}</g>${brows}<path d="${mouth}" fill="#000"/><rect x="128" y="124" width="11" height="25" rx="2" fill="#fff" transform="rotate(-12 133 136)"/></svg>`;
+		const eyes = stage === 'sober'
+			  ? '<ellipse cx="152" cy="79" rx="25" ry="25"/><ellipse cx="115" cy="85" rx="24" ry="25"/><circle cx="109" cy="90" r="10" fill="#385723" stroke="none"/><circle cx="155" cy="82" r="10" fill="#385723" stroke="none"/>'
+			  : stage === 'drunk'
+			  ? '<ellipse cx="152" cy="79" rx="25" ry="25"/><ellipse cx="115" cy="85" rx="24" ry="25"/><circle cx="109" cy="90" r="10" fill="#385723" stroke="none"/><circle cx="162" cy="75" r="10" fill="#385723" stroke="none"/>'
+			  : '<ellipse cx="152" cy="79" rx="25" ry="24"/><ellipse cx="115" cy="85" rx="23" ry="24"/><circle cx="112" cy="84" r="10" fill="none" stroke="#385723"/><circle cx="159" cy="81" r="10" fill="#385723" stroke="none"/>';
+    const mouth = stage === 'sober'
+			  ? '<path d="M114 121 c 17 39 63 14 53 -15 c -7 8 -29 20 -53 15z" fill="#000"/>'
+			  : stage === 'drunk'
+			  ? '<path d="M 107 121 c 12 45 76 37 63 -18 c -8 10 -30 23 -63 18 z" fill="#7030a0"/><path d="M 107 121 c 17 41 71 25 63 -18 c -8 10 -30 23 -63 18 z" fill="#000"/>'
+			  : '<path d="M 101 120 c 23 77 91 59 71 -22 c -8 13 -33 31 -71 22 z" fill="#7030a0"/><path d="M 101 120 c 13 53 86 51 71 -22 c -8 13 -33 31 -71 22 z" fill="#000"/>';
+		const brows = stage === 'sober'
+			  ? '<path d="M131 62 c 3 -15 34 -19 39 0 q -24 -6 -36 7zM90 84 c -4 -23 31 -35 41 -18 q -25 -1 -41 18z" fill="#cba9e5" stroke="#7030a0" stroke-width="5"/>'
+			  : stage === 'drunk'
+			  ? '<path d="M131 62 c 3 -15 34 -19 39 0 q -24 -6 -36 7zM90 84 c -4 -23 31 -35 41 -18 q -25 -1 -41 18z" fill="#cba9e5" stroke="#7030a0" stroke-width="5"/>'
+			  : '<path d="M 130 66 c 3 -18 39 -29 45 1 q -23 -3 -39 8 zM 93 90 c -8 -33 33 -41 43 -15 q -25 -1 -43 15 z" fill="#cba9e5" stroke="#7030a0" stroke-width="5"/>';
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212"><circle cx="106" cy="106" r="100" fill="#cba9e5" stroke="#7030a0" stroke-width="10"/>${bubbles}<g fill="#fff" stroke="#7030a0" stroke-width="5">${eyes}</g>${brows}${mouth}<path d="M 129 122 l 2 11 q 1 2 3 2 l 6 -1 q 2 -1 2 -3 l -2 -10.5 c -2 0.5 -6 1.5 -11 1.5 z" fill="#fff" /></svg>`;
   };
   const hatSvg = (who) => {
     const art = {
       america: '<path d="M17 121Q63 101 110 89Q171 72 234 100Q249 110 237 122Q192 139 136 137Q70 135 24 149Q4 146 17 121Z" fill="#92777a" stroke="#3d211b" stroke-width="6"/><path d="M63 105Q58 75 55 52Q57 29 84 23Q134 6 177 18Q196 25 194 51Q191 73 215 96L201 107Q143 109 63 118Z" fill="#92777a" stroke="#3d211b" stroke-width="6"/><ellipse cx="124" cy="30" rx="69" ry="18" transform="rotate(-12 124 30)" fill="#a58789" stroke="#3d211b" stroke-width="5"/><circle cx="83" cy="67" r="4" fill="#3d211b"/><circle cx="101" cy="63" r="4" fill="#3d211b"/><circle cx="76" cy="82" r="4" fill="#3d211b"/>',
       france: '<path d="M31 78Q24 66 34 55Q45 43 62 52L198 10Q220 4 231 20Q243 38 224 50L65 101Q46 109 35 94Z" fill="#e6ae39" stroke="#8a4d12" stroke-width="7"/><path d="M55 52L66 79M89 42L99 68M126 31L136 57M164 20L174 46M199 12L207 36" fill="none" stroke="#f7d675" stroke-width="5" stroke-linecap="round"/>',
-      australia: '<path d="M28 115Q49 55 109 43Q152 33 197 53Q229 66 236 94Q224 83 216 82Q233 106 224 119Q210 108 198 105Q211 126 202 137Q187 121 169 120Q182 142 165 151Q149 132 129 128Q103 120 73 142L38 161Q28 143 28 115Z" fill="#8a3d10" stroke="#5b2509" stroke-width="7"/><path d="M38 164Q64 190 108 187Q144 184 162 158Q143 176 112 174Q77 173 52 150Z" fill="#8a3d10" stroke="#5b2509" stroke-width="7"/><path d="M54 111Q97 76 155 68M61 124Q102 91 177 81M72 138Q107 113 190 97" fill="none" stroke="#a4511d" stroke-width="10"/>',
+      australia: '<path d="M 155 26 q -3 -11 -14 -16 c 62 20 39 58 -2 51 m 3 -35 q -3 -11 -14 -16 c 55 15 46 59 1 52 m -87 34 a 67 60 0 0 1 91 -66 q -3 -11 -14 -16 c 55 15 40 57 -8 50 q -41 6 -69 32 z m -6 32 c 20 44 -6 56 -29 24 c 12 6 32 10 29 -24 z m 8 21 c 19 30 -10 40 -28 25 c 3 4 26 -5 28 -25 z m 6 13 q 8 13 15 18 q -12 18 -38 4 q 25 -6 23 -22 z" fill="#8a3d10" stroke="#5b2509" stroke-width="5"/>',
     };
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 200">${art[who]}</svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212">${art[who]}</svg>`;
   };
   /*
    * Country outlines adapted from svgMap:
