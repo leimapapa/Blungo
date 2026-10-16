@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#1c2f5a">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 212 212'%3E%3Ccircle cx='106' cy='106' r='100' fill='%23cba9e5' stroke='%237030a0' stroke-width='10'%3E%3C/circle%3E%3Ccircle cx='57' cy='50' r='10' fill='none' stroke='%23ffb900' stroke-width='2'%3E%3C/circle%3E%3Ccircle cx='62' cy='68' r='6' fill='none' stroke='%23ffb900' stroke-width='2'%3E%3C/circle%3E%3Ccircle cx='62' cy='80' r='3' fill='none' stroke='%23ffb900' stroke-width='2'%3E%3C/circle%3E%3Cg fill='%23fff' stroke='%237030a0' stroke-width='5'%3E%3Cellipse cx='152' cy='79' rx='25' ry='24'%3E%3C/ellipse%3E%3Cellipse cx='115' cy='85' rx='23' ry='24'%3E%3C/ellipse%3E%3Ccircle cx='112' cy='84' r='10' fill='none' stroke='%23385723'%3E%3C/circle%3E%3Ccircle cx='159' cy='81' r='10' fill='%23385723' stroke='none'%3E%3C/circle%3E%3C/g%3E%3Cpath d='M 130 66 c 3 -18 39 -29 45 1 q -23 -3 -39 8 zM 93 90 c -8 -33 33 -41 43 -15 q -25 -1 -43 15 z' fill='%23cba9e5' stroke='%237030a0' stroke-width='5'%3E%3C/path%3E%3Cpath d='M 101 120 c 23 77 91 59 71 -22 c -8 13 -33 31 -71 22 z' fill='%237030a0'%3E%3C/path%3E%3Cpath d='M 101 120 c 13 53 86 51 71 -22 c -8 13 -33 31 -71 22 z' fill='%23000'%3E%3C/path%3E%3Cpath d='M 129 122 l 2 11 q 1 2 3 2 l 6 -1 q 2 -1 2 -3 l -2 -10.5 c -2 0.5 -6 1.5 -11 1.5 z' fill='%23fff'%3E%3C/path%3E%3C/svg%3E">
   <title>Drinkin' Round The World</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <style>*{box-sizing:border-box}
@@ -12,7 +11,9 @@ html,body{margin:0;height:100%;overflow:hidden;font-family:Verdana,sans-serif;ba
 button{font:inherit;color:#fff;border:0;cursor:pointer;padding:0}
 [hidden]{display:none!important}
 #game{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block}
-#drinkCount{position:fixed;top:max(12px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);font-size:1.1em;color:#fff;z-index:1;pointer-events:none;padding:9px 16px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(12,24,47,.55);backdrop-filter:blur(8px);text-shadow:0 2px 4px #14243f}
+#drinkCount{--progress:0%;position:fixed;top:max(12px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);display:grid;place-items:center;width:100px;height:100px;border:2px solid #000;border-radius:50%;background:conic-gradient(#f2b919 0 var(--progress),rgba(127,127,127,.9) var(--progress) 100%);color:#14243f;z-index:1;pointer-events:none}
+#drinkCount::before{position:absolute;inset:24%;border:1px solid rgba(0,0,0,.8);border-radius:50%;background:#fff;content:""}
+#drinkRemaining{position:relative;z-index:1;font-size:1.3em;font-weight:700}
 h2{text-align:center;margin:10px;color:#fff}
 .subtext{color:#fff;font-size:.6em;text-shadow:1px 1px #000}
 
@@ -57,8 +58,7 @@ h2{text-align:center;margin:10px;color:#fff}
 .menu-shell{width:min(100%,1080px);min-height:100%;margin:auto;display:flex;flex-direction:column;align-items:center}
 .title{margin:0;color:#fff;font-size:clamp(1.4rem,4vw,2.35rem);letter-spacing:.04em;text-align:center;text-shadow:0 3px 18px rgba(0,0,0,.4)}
 .menu-subtitle{margin:8px 0 18px;color:#cad9e9;text-align:center;font-size:clamp(.85rem,2vw,1rem)}
-.coin-total{align-self:center;display:flex;align-items:center;gap:7px;margin:0 0 22px;padding:9px 16px;border:1px solid rgba(255,213,93,.45);border-radius:999px;background:rgba(8,18,34,.48);color:#ffe29a;font-weight:700}
-.coin-icon{display:inline-grid;place-items:center;width:1.1em;height:1.1em;border-radius:50%;border:2px solid #b77e18;background:linear-gradient(145deg,#fff1aa,#e0a62e);color:#80520a;font-size:.82em;font-weight:900;line-height:1;box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+#bacTotal{align-self:center;display:flex;align-items:center;gap:7px;margin:0 0 22px;padding:9px 16px;border:1px solid rgba(211,78,78,.5);border-radius:999px;background:rgba(8,18,34,.48);color:#ffb5b5;font-weight:700}
 .level-grid{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,24px);margin:auto 0}
 .level{position:relative;min-height:270px;border:1px solid rgba(255,255,255,.2);border-radius:22px;overflow:hidden;transition:transform .18s,border-color .18s,filter .18s;background:linear-gradient(145deg,#264966,#192942);box-shadow:0 14px 32px rgba(0,0,0,.28);text-align:left;padding:0 18px 18px;color:#fff}
 .level:not(:disabled):hover{transform:translateY(-5px)}
@@ -70,10 +70,7 @@ h2{text-align:center;margin:10px;color:#fff}
 .level.locked .map-art,.level.locked .face,.level.locked .hat{filter:grayscale(1)}
 .level.locked::after{background:linear-gradient(180deg,rgba(28,31,35,.22),rgba(20,22,25,.48) 48%,rgba(12,14,17,.96))}
 .level:not(:disabled) .map-art{opacity:.43}
-.level.america{background-color:#244761}
-.level.france{background-color:#4b3446}
-.level.australia{background-color:#24483f}
-.level.locked.america,.level.locked.france,.level.locked.australia{background-color:#3b4149}
+.level.locked{background-color:#3b4149}
 .level::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,22,37,.05),rgba(12,22,37,.35) 48%,rgba(12,22,37,.96))}
 .level .face{position:absolute;width:clamp(78px,12vw,128px);height:clamp(78px,12vw,128px);object-fit:cover;left:50%;top:40%;transform:translate(-50%,-50%);z-index:2;border:3px solid rgba(255,255,255,.7);border-radius:50%}
 .level .hat{position:absolute;width:clamp(100px,17vw,170px);height:auto;left:50%;top:35%;transform:translate(-50%,-50%);z-index:3}
@@ -103,9 +100,6 @@ h2{text-align:center;margin:10px;color:#fff}
 .reward-card{width:100%;margin:0 auto;max-width:380px;padding:18px;border:1px solid rgba(255,226,154,.35);border-radius:18px;background:rgba(7,16,31,.55);text-align:center;color:#fff}
 .reward-earned{font-size:1.25rem;color:#ffe29a;font-weight:700}
 .reward-total{margin-top:8px;font-size:.95rem;color:#d5e4f2}
-.coin-shower{height:32px;margin:10px 0;color:#ffd45b;font-size:1.5rem}
-.coin-shower span{display:inline-block;animation:coinPop .8s ease-out both}
-@keyframes coinPop{0%{transform:translateY(18px) scale(.3) rotate(-30deg);opacity:0}65%{transform:translateY(-8px) scale(1.2) rotate(12deg);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
 
 /* character creator */
 #creator{position:fixed;inset:0;background:#eb9f23;z-index:400;overflow-y:auto;text-align:center;padding-top:35px}
@@ -133,7 +127,7 @@ h2{text-align:center;margin:10px;color:#fff}
   .level-copy{left:14px;right:38%;bottom:13px;gap:4px}
   .level-name{font-size:1.05rem}
   .level-state{line-height:1.25}
-  .coin-total{margin-bottom:16px}
+  #bacTotal{margin-bottom:16px}
   #winnerMenu{height:calc(100% - max(16px,env(safe-area-inset-top)) - max(16px,env(safe-area-inset-bottom)))}
   #winnerMenu{gap:16px}
   .winner-actions{gap:18px}
@@ -143,7 +137,9 @@ h2{text-align:center;margin:10px;color:#fff}
 </head>
 <body>
   <canvas id="game"></canvas>
-  <div id="drinkCount"></div>
+  <div id="drinkCount" role="progressbar" aria-label="BAC earned this level" aria-valuemin="0" aria-valuenow="0" aria-valuemax="1">
+    <span id="drinkRemaining">50</span>
+  </div>
   <button id="pauseBtn" class="round green" title="Pause" hidden>
     <svg class="icon-svg pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
   </button>
@@ -153,7 +149,7 @@ h2{text-align:center;margin:10px;color:#fff}
     <div class="menu-shell">
       <h1 class="title">Drinkin' Round The World</h1>
       <p class="menu-subtitle">Explore each country, collect every drink, and unlock new destinations.</p>
-      <div id="menuCoinTotal" class="coin-total" aria-live="polite"><span class="coin-icon" aria-hidden="true">¢</span><span id="menuCoinValue">0</span><span>coins</span></div>
+      <div id="bacTotal" aria-live="polite">BAC: <span id="menuBACValue">0.00%</span></div>
       <div id="levelGrid" class="level-grid">
       </div>
       <p id="menuError" role="status" hidden></p>
@@ -186,7 +182,6 @@ h2{text-align:center;margin:10px;color:#fff}
   <div id="winnerMenu" hidden>
     <h2 id="winnerText"></h2>
     <div class="reward-card" aria-live="polite">
-      <div id="coinShower" class="coin-shower" aria-hidden="true"></div>
       <div id="rewardEarned" class="reward-earned"></div>
       <div id="rewardTotal" class="reward-total"></div>
       <div id="rewardStatus" class="reward-total" role="status"></div>
@@ -287,60 +282,51 @@ const PHRASES = {
 };
 </script>
   <script>// Country-aware JavaScript game core.
-const COUNTRIES = [
-  {
-    id: 'america', name: 'America', unlockCost: 0,
-    outline: [
-      [-124.7, 48.4], [-123.1, 46.3], [-124.1, 42.0], [-122.8, 41.0], [-123.0, 39.0],
-      [-122.4, 37.8], [-122.5, 37.0], [-120.0, 36.0], [-119.0, 34.8], [-117.1, 32.5],
-      [-114.8, 32.7], [-111.1, 31.3], [-109.0, 31.3], [-106.5, 31.8], [-103.0, 29.0],
-      [-101.0, 29.0], [-99.0, 26.4], [-97.1, 25.9], [-96.0, 28.0], [-94.5, 29.5],
-      [-92.0, 29.2], [-90.0, 29.1], [-88.0, 30.3], [-85.0, 30.0], [-82.0, 27.5],
-      [-80.0, 25.2], [-80.0, 28.5], [-80.5, 30.5], [-81.0, 32.0], [-79.0, 34.8],
-      [-77.0, 36.5], [-75.5, 38.0], [-74.0, 40.0], [-72.0, 41.0], [-70.0, 42.5],
-      [-69.5, 44.0], [-71.5, 45.2], [-73.5, 45.0], [-75.0, 44.8], [-77.0, 43.5],
-      [-79.0, 43.5], [-80.2, 41.6], [-82.0, 41.7], [-83.0, 42.4], [-84.8, 45.2],
-      [-87.0, 45.1], [-89.5, 47.0], [-90.5, 46.0], [-92.0, 46.5], [-94.7, 49.0],
-      [-100.0, 49.0], [-106.0, 49.0], [-112.0, 49.0], [-118.0, 49.0], [-122.8, 49.0],
-      [-124.7, 48.4],
-    ],
-  },
-  {
-    id: 'france', name: 'France', unlockCost: 75,
-    outline: [
-      [-4.8, 48.6], [-1.8, 48.6], [-1.5, 46.8], [-2.2, 46.0], [-1.8, 43.4],
-      [-1.1, 43.0], [0.0, 42.6], [2.0, 42.4], [3.0, 43.0], [4.2, 43.1],
-      [5.5, 43.0], [6.8, 43.1], [7.5, 43.7], [7.6, 44.2], [7.1, 45.1],
-      [7.5, 45.9], [6.8, 46.4], [7.2, 47.5], [6.5, 48.1], [7.6, 49.0],
-      [7.5, 49.2], [6.1, 49.5], [5.8, 50.0], [4.2, 49.9], [2.5, 50.0],
-      [1.6, 50.9], [0.0, 50.9], [-1.5, 49.9], [-4.7, 48.8], [-4.8, 48.6],
-    ],
-  },
-  {
-    id: 'australia', name: 'Australia', unlockCost: 150,
-    outline: [
-      [113.0, -25.0], [113.5, -22.0], [114.8, -21.0], [115.0, -18.0], [122.0, -17.0],
-      [127.0, -14.0], [129.0, -14.0], [130.0, -12.0], [132.0, -12.0], [135.0, -12.3],
-      [137.0, -16.0], [139.0, -17.0], [140.0, -17.0], [141.0, -14.0], [143.0, -14.0],
-      [145.0, -16.0], [146.0, -18.0], [148.0, -20.0], [150.0, -23.0], [153.6, -28.0],
-      [153.0, -30.0], [151.0, -33.0], [150.0, -36.0], [147.0, -38.0], [145.0, -38.5],
-      [143.0, -38.0], [141.0, -38.0], [140.0, -37.0], [139.0, -36.0], [137.0, -35.0],
-      [135.0, -34.0], [133.0, -32.0], [131.0, -31.0], [129.0, -31.0], [127.0, -32.0],
-      [124.0, -33.0], [122.0, -34.0], [120.0, -34.5], [118.0, -34.0], [116.0, -34.0],
-      [115.0, -32.0], [114.0, -29.0], [113.0, -25.0],
-    ],
-  },
-];
+let COUNTRIES = [];
 
-for (const country of COUNTRIES) {
-  const lons = country.outline.map(([lon]) => lon);
-  const lats = country.outline.map(([, lat]) => lat);
-  country.geoBounds = {
-    minLon: Math.min(...lons), maxLon: Math.max(...lons),
-    minLat: Math.min(...lats), maxLat: Math.max(...lats),
-  };
-  country.mapAspect = (country.geoBounds.maxLon - country.geoBounds.minLon) /
-    (country.geoBounds.maxLat - country.geoBounds.minLat);
+async function loadCountrySettings() {
+  const response = await fetch('media/countries/settings.json');
+  if (!response.ok) throw new Error('HTTP ' + response.status + ' loading media/countries/settings.json');
+  const settings = await response.json();
+  if (!settings || settings.version !== 1 || !Array.isArray(settings.countries) || !settings.countries.length) {
+    throw new Error('Expected settings.json version 1 with an ordered countries array.');
+  }
+  const ids = new Set();
+  let previousUnlockBAC = -1;
+  COUNTRIES = settings.countries.map((entry, index) => {
+    if (!entry || typeof entry.id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.id) ||
+        ids.has(entry.id) || typeof entry.name !== 'string' || !entry.name.trim() ||
+        typeof entry.drinkName !== 'string' || !entry.drinkName.trim() ||
+        !Number.isFinite(entry.unlockBAC) || entry.unlockBAC < 0 ||
+        !Number.isFinite(entry.bacPerDrink) || entry.bacPerDrink <= 0 ||
+        !Array.isArray(entry.outline) || entry.outline.length < 4 ||
+        !entry.outline.every((point) => Array.isArray(point) && point.length === 2 &&
+          Number.isFinite(point[0]) && point[0] >= -180 && point[0] <= 180 &&
+          Number.isFinite(point[1]) && point[1] >= -90 && point[1] <= 90) ||
+        entry.outline[0][0] !== entry.outline[entry.outline.length - 1][0] ||
+        entry.outline[0][1] !== entry.outline[entry.outline.length - 1][1]) {
+      throw new Error('Invalid country settings at countries[' + index + '].');
+    }
+    if (entry.unlockBAC < previousUnlockBAC || (index === 0 && entry.unlockBAC !== 0)) {
+      throw new Error('Country unlockBAC values must be ascending and the first country must start at 0.');
+    }
+    ids.add(entry.id);
+    previousUnlockBAC = entry.unlockBAC;
+    const country = { ...entry };
+    const lons = country.outline.map(([lon]) => lon);
+    const lats = country.outline.map(([, lat]) => lat);
+    country.geoBounds = {
+      minLon: Math.min(...lons), maxLon: Math.max(...lons),
+      minLat: Math.min(...lats), maxLat: Math.max(...lats),
+    };
+    if (country.geoBounds.minLon === country.geoBounds.maxLon ||
+        country.geoBounds.minLat === country.geoBounds.maxLat) {
+      throw new Error('Country outline at countries[' + index + '] must have non-zero longitude and latitude bounds.');
+    }
+    country.mapAspect = (country.geoBounds.maxLon - country.geoBounds.minLon) /
+      (country.geoBounds.maxLat - country.geoBounds.minLat);
+    return country;
+  });
 }
 
 function pointInCountry(country, point) {
@@ -416,7 +402,7 @@ const JsCore = (() => {
           });
         }
         g.n--; g.dx[i] = g.dx[g.n]; g.dy[i] = g.dy[g.n];
-        g.hr = Math.min(g.hr + DR * 0.2, Math.min(g.mapW, g.mapH) * 0.34);
+        g.hr = Math.min(g.hr + DR * 0.05, Math.min(g.mapW, g.mapH) * 0.34);
         g.eaten++; g.atePending++; ev |= 1;
       }
     }
@@ -573,8 +559,7 @@ const Assets = (() => {
     drunk: 'media/characters/drunk.png',
     smashed: 'media/characters/smashed.png',
   };
-  const music = Object.fromEntries(COUNTRIES.map((country) => [country.id, 'media/countries/' + country.id + '/music.mp3']));
-  const sfx = Object.fromEntries(COUNTRIES.map((country) => [country.id, 'media/countries/' + country.id + '/collect.mp3']));
+  const music = Object.create(null), sfx = Object.create(null);
 
   function roundSprite(img, size = 568) {
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = size;
@@ -597,6 +582,8 @@ const Assets = (() => {
     await Promise.all([
       ...stages.map(async (stage, index) => { sprites[index] = roundSprite(await loadImage(characterUrls[stage])); }),
       ...COUNTRIES.map(async (country) => {
+        music[country.id] = 'media/countries/' + country.id + '/music.mp3';
+        sfx[country.id] = 'media/countries/' + country.id + '/collect.mp3';
         const [map, drink, hat] = await Promise.all([
           loadImage(countryUrl(country.id)), loadImage(drinkUrl(country.id)), loadImage(hatUrl(country.id)),
         ]);
@@ -637,7 +624,7 @@ const Sound = (() => {
     oscillator.connect(gain); gain.connect(musicGain); oscillator.start(time); oscillator.stop(time + len + 0.02);
   }
   function schedule() {
-    const song = SONGS[who]; if (!song || !ctx) return;
+    const song = SONGS[who] || SONGS.america; if (!ctx) return;
     while (nextT < ctx.currentTime + 0.35) {
       const semi = song.pat[step % song.pat.length], len = song.dur / rate;
       if (semi != null) {
@@ -785,12 +772,11 @@ const Camera = (() => {
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
-  const COIN_KEY = 'drinkinUnlockCoins';
+  const BAC_KEY = 'drinkinBAC';
   const DRINKS = 50; // drinks per level (core supports up to 256)
   const canvas = $('game'), ctx = canvas.getContext('2d');
   let core = null, dpr = 1, W = 0, H = 0;
-  let state = 'menu', level = 0, raf = 0, last = 0, shownCount = -1, elapsedMs = 0, coins = 0;
-  let rewardFrame = 0;
+  let state = 'menu', level = 0, raf = 0, last = 0, shownCount = -1, bac = 0, runBAC = 0, bacSaveFailed = false;
 
   async function loadBarLocations(country) {
     if (location.protocol === 'file:') return [];
@@ -897,15 +883,19 @@ const Camera = (() => {
   function frame(t) {
     raf = requestAnimationFrame(frame);
     const dt = t - last; last = t;
-    elapsedMs += Math.max(0, Math.min(250, dt));
     const ev = core.tick(dt);
     if (ev & 1) {
-      core.takeAte();
-      Sound.pop(COUNTRIES[level].id); Sound.setRate(core.musicRate());
+      const country = COUNTRIES[level], collected = core.takeAte();
+      const gained = collected * country.bacPerDrink;
+      runBAC = Math.round((runBAC + gained) * 10000) / 10000;
+      bac = Math.round((bac + gained) * 10000) / 10000;
+      saveBAC(bac);
+      updateLevelCards();
+      Sound.pop(country.id); Sound.setRate(core.musicRate());
     }
     draw();
     const left = core.left();
-    if (left !== shownCount) { shownCount = left; $('drinkCount').innerHTML = '<b>' + left + '</b>'; }
+    if (left !== shownCount) { shownCount = left; updateDrinkProgress(left); }
     if (ev & 2) win();
   }
   function loop(on) {
@@ -916,72 +906,64 @@ const Camera = (() => {
   // ---- game flow ---------------------------------------------------------------------
   function show(id, on) { $(id).hidden = !on; }
   function reportStorageError(message) { $('menuError').textContent = message; $('menuError').hidden = false; }
-  function loadCoins() {
+  function formatBAC(value) { return value.toFixed(2) + '%'; }
+  function updateDrinkProgress(remaining) {
+    const country = COUNTRIES[level];
+    const levelBAC = DRINKS * country.bacPerDrink;
+    const progress = Math.min(1, runBAC / levelBAC);
+    const indicator = $('drinkCount');
+    indicator.style.setProperty('--progress', (progress * 100) + '%');
+    indicator.setAttribute('aria-valuenow', String(runBAC));
+    indicator.setAttribute('aria-valuemax', String(levelBAC));
+    indicator.setAttribute('aria-valuetext', formatBAC(runBAC) + ' BAC earned; ' + remaining + ' drinks remaining');
+    $('drinkRemaining').textContent = String(remaining);
+  }
+  function loadBAC() {
     try {
-      const value = Number(localStorage.getItem(COIN_KEY) || 0);
-      coins = Number.isSafeInteger(value) && value >= 0 ? value : 0;
+      const stored = localStorage.getItem(BAC_KEY);
+      const value = stored === null ? 0 : Number(stored);
+      if (!Number.isFinite(value) || value < 0) throw new Error('Stored BAC must be a non-negative number.');
+      bac = value;
     } catch {
-      coins = 0;
-      reportStorageError('Coin progress could not be read from this browser.');
+      bac = 0;
+      bacSaveFailed = true;
+      reportStorageError('BAC progress could not be read from this browser.');
     }
     updateLevelCards();
   }
-  function saveCoins(value) {
+  function saveBAC(value) {
     try {
-      localStorage.setItem(COIN_KEY, String(value));
+      localStorage.setItem(BAC_KEY, String(value));
+      bacSaveFailed = false;
       return true;
     } catch {
-      reportStorageError('Coin progress could not be saved. Check this browser’s storage settings.');
+      bacSaveFailed = true;
+      reportStorageError('BAC progress could not be saved. Check this browser’s storage settings.');
       return false;
     }
   }
   function updateLevelCards() {
-    $('menuCoinValue').textContent = String(coins);
+    $('menuBACValue').textContent = formatBAC(bac);
     levelBtns.forEach((button, i) => {
-      const country = COUNTRIES[i], unlocked = coins >= country.unlockCost;
+      const country = COUNTRIES[i], unlocked = bac >= country.unlockBAC;
       button.disabled = !unlocked;
       button.classList.toggle('locked', !unlocked);
-      const progress = country.unlockCost === 0 ? 1 : Math.min(1, coins / country.unlockCost);
+      const progress = country.unlockBAC === 0 ? 1 : Math.min(1, bac / country.unlockBAC);
       button.querySelector('.level-progress').style.setProperty('--unlock-progress', (progress * 100) + '%');
       button.setAttribute('aria-label', unlocked
         ? 'Play ' + country.name
-        : country.name + ' locked. ' + coins + ' of ' + country.unlockCost + ' coins earned.');
+        : country.name + ' locked. ' + formatBAC(bac) + ' of ' + formatBAC(country.unlockBAC) + ' BAC.');
     });
-  }
-  function animateReward(previous, total, earned) {
-    cancelAnimationFrame(rewardFrame);
-    $('rewardEarned').textContent = '+' + earned + ' coins earned';
-    $('rewardTotal').textContent = 'Total: ' + previous + ' coins';
-    const shower = $('coinShower');
-    shower.replaceChildren();
-    for (let i = 0; i < 9; i++) {
-      const coin = document.createElement('span');
-      coin.className = 'coin-icon';
-      coin.textContent = '¢';
-      coin.style.animationDelay = (i * 65) + 'ms';
-      shower.append(coin);
-    }
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      $('rewardTotal').textContent = 'Total: ' + total + ' coins';
-      return;
-    }
-    const startedAt = performance.now(), duration = 1400;
-    const update = (now) => {
-      const progress = Math.min(1, (now - startedAt) / duration);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      $('rewardTotal').textContent = 'Total: ' + Math.round(previous + (total - previous) * eased) + ' coins';
-      if (progress < 1) rewardFrame = requestAnimationFrame(update);
-    };
-    rewardFrame = requestAnimationFrame(update);
   }
   function startLevel(i) {
     const country = COUNTRIES[i];
     if (!country) throw new Error('Unknown country level: ' + i);
     level = i; state = 'playing';
-    elapsedMs = 0;
+    runBAC = 0;
     Sound.unlock();
     core.start(i, DRINKS, Camera.mask(), country, barLocations[country.id] || []);
     shownCount = -1;
+    updateDrinkProgress(core.left());
     show('mainMenu', false); show('options', false); show('winnerMenu', false); show('pauseMenu', false);
     show('pauseBtn', true); show('drinkCount', true);
     Sound.play(country.id);
@@ -1005,16 +987,11 @@ const Camera = (() => {
     const list = PHRASES[COUNTRIES[level].id] || ['You explored every corner and collected every drink!'];
     const phrase = list[core.randBelow(list.length)];
     $('winnerText').innerHTML = phrase; // phrases.js is our own trusted content
-    const elapsedSeconds = elapsedMs / 1000;
-    const earned = Math.max(10, Math.round(100 * 120 / (120 + elapsedSeconds)));
-    const previous = coins, total = coins + earned;
-    coins = total;
-    const saved = saveCoins(total);
-    updateLevelCards();
-    animateReward(previous, total, earned);
-    $('rewardStatus').textContent = saved ? '' : 'Progress could not be saved to localStorage.';
-    $('rewardEarned').setAttribute('aria-label', earned + ' coins earned');
-    $('rewardTotal').setAttribute('aria-label', 'Coin total: ' + total);
+    $('rewardEarned').textContent = 'This level: +' + formatBAC(runBAC);
+    $('rewardTotal').textContent = 'Cumulative BAC: ' + formatBAC(bac);
+    $('rewardStatus').textContent = bacSaveFailed ? 'BAC progress could not be saved to this browser.' : '';
+    $('rewardEarned').setAttribute('aria-label', 'BAC gained this level: ' + formatBAC(runBAC));
+    $('rewardTotal').setAttribute('aria-label', 'Cumulative BAC: ' + formatBAC(bac));
     const w = $('winnerMenu');
     w.className = COUNTRIES[level].id + 'win';
     show('pauseBtn', false); show('winnerMenu', true);
@@ -1088,20 +1065,27 @@ const Camera = (() => {
   (async function main() {
     $('drinkCount').hidden = true;
     resize();
-    await Promise.all([boot(), Assets.loadAll()]);
-    resize();
-    createLevelCards();
-    await Promise.all(COUNTRIES.map(async (country) => {
-      try {
-        barLocations[country.id] = await loadBarLocations(country);
-      } catch (error) {
-        console.warn('Could not load ' + country.name + ' GeoJSON bar locations; using generated mainland locations.', error);
-        barLocations[country.id] = [];
-      }
-    }));
-    setupMenuArt(); wire(); loadCoins();
-    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
-    document.documentElement.dataset.core = core.name;
+    try {
+      await loadCountrySettings();
+      await Promise.all([boot(), Assets.loadAll()]);
+      resize();
+      createLevelCards();
+      await Promise.all(COUNTRIES.map(async (country) => {
+        try {
+          barLocations[country.id] = await loadBarLocations(country);
+        } catch (error) {
+          console.warn('Could not load ' + country.name + ' GeoJSON bar locations; using generated mainland locations.', error);
+          barLocations[country.id] = [];
+        }
+      }));
+      setupMenuArt(); wire(); loadBAC();
+      if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+      document.documentElement.dataset.core = core.name;
+    } catch (error) {
+      console.error('Could not initialize the game.', error);
+      $('menuError').textContent = 'Could not load game settings or country assets. Serve drinkin.html and the media folder over HTTP.';
+      $('menuError').hidden = false;
+    }
   })();
 })();
 </script>
